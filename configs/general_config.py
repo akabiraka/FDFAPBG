@@ -18,3 +18,25 @@ OUTPUT_DIR = "outputs/"
 OUTPUT_IMAGES_DIR = OUTPUT_DIR + "images/"
 OUTPUT_MODELS_DIR = OUTPUT_DIR + "models/"
 OUTPUT_LOGS_DIR = OUTPUT_DIR + "logs/"
+
+# 20 amino-acids
+AMINO_ACID_3TO1 = {'ALA': 'A',
+                   'CYS': 'C',
+                   'ASP': 'D',
+                   'GLU': 'E',
+                   'PHE': 'F',
+                   'GLY': 'G',
+                   'HIS': 'H',
+                   'ILE': 'I',
+                   'LYS': 'K',
+                   'LEU': 'L',
+                   'MET': 'M',
+                   'ASN': 'N',
+                   'PRO': 'P',
+                   'GLN': 'Q',
+                   'ARG': 'R',
+                   'SER': 'S',
+                   'THR': 'T',
+                   'VAL': 'V',
+                   'TRP': 'W',
+                   'TYR': 'Y'}
