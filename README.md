@@ -1,5 +1,5 @@
 # Project Title
-Deep Learning Project Model
+Started from the following paper "FULLY DIFFERENTIABLE FULL-ATOM PROTEIN BACKBONE GENERATION"
 
 ## What it does?
 Simply this is template of a deep learning project. It contains no particular code excepts some packages, basic module and top view run and tester file. So basically this project requires to understand directories so that you can put codes in correct directory.
