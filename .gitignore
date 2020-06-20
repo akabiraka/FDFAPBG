@@ -130,3 +130,6 @@ dmypy.json
 
 # modified by aneeq
 .vscode/
+
+data/pdbs/*.cif
+data/*.txt
