@@ -40,11 +40,11 @@ class MoleculeCoordinates(APDBData):
                 d3_coords_matrix.append(residue[atom].coord)
         return np.array(d3_coords_matrix)
 
-    def get(self, pdb_id, chain_id, atoms=["CB"]):
+    def get(self, pdb_id, chain_id, atoms=CONFIGS.BACKBONE_ATOMS):
         """
         Returns 3d coordinates extracted from pdb data for given atoms.
         """
-        print("preparing coordinates of molecules for {}:{} ... ...".format(pdb_id, chain_id))
+        print("Preparing coordinates of molecules for {}:{} ... ...".format(pdb_id, chain_id))
         aa_residues = self.get_a_chain(pdb_id, chain_id)
         d3_coords = self.get_3d_coords(aa_residues, atoms)
         

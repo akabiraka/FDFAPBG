@@ -4,8 +4,9 @@ sys.path.append('../FDFAPBG')
 from Bio.PDB import *
 
 import configs.general_config as CONFIGS
-from datasets.contact_map import ContactMap
 import utils.data_utils as DataUtils
+from datasets.contact_map import ContactMap
+from datasets.molecule_coordinates import MoleculeCoordinates
 
 class DataGenerator(object):
     def __init__(self):
@@ -33,7 +34,8 @@ class DataGenerator(object):
 
 
 generator = DataGenerator()
-c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
+c_map = ContactMap(map_type='4N4N')
+coords = MoleculeCoordinates()
 file_content = open(CONFIGS.ALL_PDB_IDS, "r")
 for i, line in enumerate(file_content):
     print("{}th protein:".format(i+1))
@@ -41,5 +43,7 @@ for i, line in enumerate(file_content):
     pdb_with_chain = pdb_id + chain_id
     # print(pdb_id, chain_id)
     generator.download(pdb_id)
-    c_map.get(pdb_id, chain_id)
+    dist_matrix = c_map.get(pdb_id, chain_id)
+    d3_coords = coords.get(pdb_id, chain_id)
+    print(dist_matrix.shape, d3_coords.shape)
     print()

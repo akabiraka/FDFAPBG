@@ -99,7 +99,7 @@ class ContactMap(APDBData):
         Returns contact-map or distance matrix based on instace initialization. 
         It also normalizes the distace matrix between 0 and 1.
         """
-        print("computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
+        print("Computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
         aa_residues = self.get_a_chain(pdb_id, chain_id)
         
         # distance matrix computation
