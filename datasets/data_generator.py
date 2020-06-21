@@ -31,21 +31,6 @@ class DataGenerator(object):
         """
         self.pdbl.retrieve_pdb_file(pdb_code, pdir=CONFIGS.PDB_DIR, file_format=CONFIGS.CIF)
 
-    def get_3D_coordinate_matrix(self, pdb_id, chain_id):
-        print("computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
-        pdb_filename = CONFIGS.PDB_DIR + pdb_id + CONFIGS.DOT_CIF
-        is_defected = False
-        # reading whole structure
-        structure = self.parser.get_structure(pdb_id, pdb_filename)
-        models = list(structure.get_models())
-        chains = list(models[0].get_chains())
-        # for each chain
-        for chain in chains:
-            if chain.id == chain_id:
-                all_residues = list(chain.get_residues())
-                aa_residues, seq, _ = DataUtils.filter_aa_residues(all_residues)
-                n_aa_residues = len(aa_residues)
-
 
 generator = DataGenerator()
 c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
