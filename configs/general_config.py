@@ -2,6 +2,7 @@
 DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
 CONTACT_MAP_DIR = DATA_DIR + "contact_maps/"
+MOLECULE_COORDINATES_DIR = DATA_DIR + "molecule_coordinates/"
 
 # input files
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
