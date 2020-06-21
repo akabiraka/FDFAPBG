@@ -1,3 +1,7 @@
+# window definations while cropping fixed side data
+WINDOW_SIZE = 256
+WINDOW_STRIDE = 8
+
 # data directories
 DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
