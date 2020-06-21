@@ -134,3 +134,4 @@ dmypy.json
 data/pdbs/*.cif
 data/*.txt
 data/contact_maps/*.pt
+data/molecule_coordinates/*.pt
