@@ -67,6 +67,7 @@ class ContactMap(object):
             atom_2 = "CA"
 
         diff_vector = residue_1[atom_1].coord - residue_2[atom_2].coord
+        
         return np.sqrt(np.sum(diff_vector * diff_vector))
 
     def compute_nn_distance_matrix(self, chain_1, chain_2, atom_1="CB", atom_2="CB"):
@@ -114,10 +115,30 @@ class ContactMap(object):
                         dist_matrix[4*row+k, 4*col+l] = self.compute_atom_atom_distance(residue_1, residue_2, atom_1, atom_2)
         return dist_matrix  
 
+    def get_4nn_3d_coords(self, chain):
+        d3_coords_matrix = [[],[], [],[]]
+        for i, residue in enumerate(chain):
+            d3_coords_matrix[0].append(residue['CA'].coord)
+            if residue.get_resname()=='GLY':
+                d3_coords_matrix[1].append(residue['CA'].coord)
+            else:
+                d3_coords_matrix[1].append(residue['CB'].coord)
+            d3_coords_matrix[2].append(residue['N'].coord)
+            d3_coords_matrix[3].append(residue['O'].coord)
+        return np.array(d3_coords_matrix)
+
+    def get_nn_3d_coords(self, chain, atoms=["CB"]):
+        d3_coords_matrix = []
+        for i, residue in enumerate(chain):
+            for j, atom in enumerate(atoms):
+                if atom=="CB" and residue.get_resname()=='GLY':
+                    atom = "CA"
+                d3_coords_matrix.append(residue[atom].coord)
+        return np.array(d3_coords_matrix)
+
     def get(self, pdb_id, chain_id):
         print("computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
         pdb_filename = CONFIGS.PDB_DIR + pdb_id + CONFIGS.DOT_CIF
-        is_defected = False
         # reading whole structure
         structure = self.parser.get_structure(pdb_id, pdb_filename)
         models = list(structure.get_models())
@@ -130,12 +151,17 @@ class ContactMap(object):
                 n_aa_residues = len(aa_residues)
                 # print(_)
                 dist_matrix = 0.0
+                d3_coords = 0.0
                 if self.map_type == "4N4N":
                     dist_matrix = self.compute_4n4n_distance_matrix(aa_residues, aa_residues)
+                    d3_coords = self.get_nn_3d_coords(aa_residues, CONFIGS.BACKBONE_ATOMS)
                 elif self.map_type == "4NN":
                     dist_matrix = self.compute_4nn_distance_matrix(aa_residues, aa_residues)
+                    d3_coords = self.get_4nn_3d_coords(aa_residues)
                 else: 
                     dist_matrix = self.compute_nn_distance_matrix(aa_residues, aa_residues, self.atom_1, self.atom_2)
+                    d3_coords = self.get_nn_3d_coords(aa_residues, [self.atom_1, self.atom_2])
+
                 # dist_matrix = np.zeros((n_aa_residues, n_aa_residues), np.float)
                 # try:
                 #     # computing distance matrix
@@ -157,14 +183,14 @@ class ContactMap(object):
 
         if self.save_map:
             DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
-        return is_defected, dist_matrix
+        return dist_matrix, d3_coords
 
 
 # c_map = ContactMap(mat_type="c_map", map_type='NN', atom_1="CA", atom_2="CA")
 # c_map = ContactMap(mat_type="c_map", map_type='4NN')
-c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
-_, dist_matrix = c_map.get("5sy8", "O")
-print(dist_matrix.shape)
+c_map = ContactMap(mat_type="norm_dist", map_type='NN')
+dist_matrix, d3_coords = c_map.get("5sy8", "O")
+print(dist_matrix.shape, d3_coords.shape)
 if c_map.map_type == "4NN":
     DataViz.plot_images([dist_matrix[0], dist_matrix[1], dist_matrix[2], dist_matrix[3]], "5sy8"+"O", cols=2)
 else: 
