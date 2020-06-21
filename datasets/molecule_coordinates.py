@@ -2,33 +2,12 @@ import sys
 sys.path.append("../FDFAPBG")
 import numpy as np
 
-from Bio.PDB import *
-
 import configs.general_config as CONFIGS
+from datasets.a_pdb_data import APDBData
 
-class MoleculeCoordinates(object):
+class MoleculeCoordinates(APDBData):
     def __init__(self):
         super(MoleculeCoordinates, self).__init__()
-        self.parser = MMCIFParser(QUIET=True)
-
-    def filter_aa_residues(self, chain):
-        """
-        A chain can be heteroatoms(water, ions, etc; anything that 
-        isn't an amino acid or nucleic acid)
-        so this function get rid of atoms excepts amino-acids
-        """
-        aa_residues = []
-        non_aa_residues = []
-        non_aa = []
-        seq = ""
-        for i in chain:
-            if i.get_resname() in standard_aa_names:
-                aa_residues.append(i)
-                seq += CONFIGS.AMINO_ACID_3TO1[i.get_resname()]
-            else:
-                non_aa.append(i.get_resname())
-                non_aa_residues.append(i.get_resname())
-        return aa_residues, seq, non_aa_residues
 
     def get_4nn_3d_coords(self, chain):
         """
@@ -57,23 +36,11 @@ class MoleculeCoordinates(object):
                     atom = "CA"
                 d3_coords_matrix.append(residue[atom].coord)
         return np.array(d3_coords_matrix)
-    
+
     def get(self, pdb_id, chain_id, atoms=["CB"]):
         print("preparing coordinates of molecules for {}:{} ... ...".format(pdb_id, chain_id))
-        pdb_filename = CONFIGS.PDB_DIR + pdb_id + CONFIGS.DOT_CIF
-        # reading whole structure
-        structure = self.parser.get_structure(pdb_id, pdb_filename)
-        models = list(structure.get_models())
-        chains = list(models[0].get_chains())
-        # for each chain
-        for chain in chains:
-            if chain.id == chain_id:
-                all_residues = list(chain.get_residues())
-                aa_residues, seq, _ = self.filter_aa_residues(all_residues)
-                n_aa_residues = len(aa_residues)
-                
-                d3_coords = self.get_3d_coords(aa_residues, atoms)
-
+        aa_residues = self.get_a_chain(pdb_id, chain_id)
+        d3_coords = self.get_3d_coords(aa_residues, atoms)
         return d3_coords
 
 coords = MoleculeCoordinates()
