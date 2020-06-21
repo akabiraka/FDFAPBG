@@ -12,6 +12,9 @@ MOLECULE_COORDINATES_DIR = DATA_DIR + "molecule_coordinates/"
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
 BAD_PDB_IDS = DATA_DIR + "bad_pdb_ids.txt"
 GOOD_PDB_IDS = DATA_DIR + "good_pdb_ids.txt"
+TRAIN_FILE = DATA_DIR + 'train.txt'
+VAL_FILE = DATA_DIR + 'val.txt'
+TEST_FILE = DATA_DIR + 'test.txt'
 
 # file format
 CIF = 'mmCif'

@@ -9,19 +9,29 @@ import utils.data_utils as DataUtils
 import configs.general_config as CONFIGS
 
 class ProteinDataset(Dataset):
-    def __init__(self):
+    def __init__(self, pdb_codes_file=CONFIGS.TRAIN_FILE):
         super(ProteinDataset, self).__init__()
+        self.records = self.generate_inp_out_sets(pdb_codes_file)
 
     def __len__(self):
-        return 0
+        return len(self.records)
 
     def __getitem__(self, i):
-        pass
+        return self.records[i]
 
-    def generate_inp_out_sets(self):
-        pdb_id, chain_id = "5sy8", "O"
-        full_c_map = DataUtils.read_contact_map_tensor(pdb_id + chain_id)
-        full_d3_coords = DataUtils.read_3d_coords_tensor(pdb_id + chain_id)
+    def generate_inp_out_sets(self, pdb_codes_file):
+        file_content = open(pdb_codes_file).read()
+        pdb_codes = file_content.split()
+        records = []
+        for i, pdb_code in enumerate(pdb_codes):
+            records.extend(self.get_inp_out_sets(pdb_code))
+        return records
+
+
+    def get_inp_out_sets(self, pdb_code):
+        # pdb_code = "5sy8" + "O"
+        full_c_map = DataUtils.read_contact_map_tensor(pdb_code)
+        full_d3_coords = DataUtils.read_3d_coords_tensor(pdb_code)
         # print(full_c_map.shape, d3_coords.shape)
         rows, cols = full_c_map.shape
         half_width = math.floor(CONFIGS.WINDOW_SIZE / 2)
@@ -44,11 +54,13 @@ class ProteinDataset(Dataset):
         return all_input_output_set
 
 pd = ProteinDataset()
-# a contact map is divided into fixed size contact-map and 3d coordinate matrix
-print(len(pd.generate_inp_out_sets())) 
-# accessing the 0th [inp, out] set, where inp=fixed_size_contact_map, out=fixed_side_3d_coords_matrix
-print(len(pd.generate_inp_out_sets()[0]))
-# accessing the 0th [inp, out] pair's contact-map/distance-matrix shape
-print(pd.generate_inp_out_sets()[0][0].shape)
-# accessing the 0th [inp, out] pair's 3d-coordinate-matrix shape
-print(pd.generate_inp_out_sets()[0][1].shape)
+print(pd.__len__())
+print(len(pd.__getitem__(0)))
+# # a contact map is divided into fixed size contact-map and 3d coordinate matrix
+# print(len(pd.get_inp_out_sets("5sy8" + "O"))) 
+# # accessing the 0th [inp, out] set, where inp=fixed_size_contact_map, out=fixed_side_3d_coords_matrix
+# print(len(pd.get_inp_out_sets("5sy8" + "O")[0]))
+# # accessing the 0th [inp, out] pair's contact-map/distance-matrix shape
+# print(pd.get_inp_out_sets("5sy8" + "O")[0][0].shape)
+# # accessing the 0th [inp, out] pair's 3d-coordinate-matrix shape
+# print(pd.get_inp_out_sets("5sy8" + "O")[0][1].shape)
