@@ -40,3 +40,4 @@ AMINO_ACID_3TO1 = {'ALA': 'A',
                    'VAL': 'V',
                    'TRP': 'W',
                    'TYR': 'Y'}
+BACKBONE_ATOMS = ['CA', 'CB', 'N', 'O']
