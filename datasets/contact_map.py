@@ -95,9 +95,14 @@ class ContactMap(APDBData):
         return dist_matrix  
 
     def get(self, pdb_id, chain_id):
+        """
+        Returns contact-map or distance matrix based on instace initialization. 
+        It also normalizes the distace matrix between 0 and 1.
+        """
         print("computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
         aa_residues = self.get_a_chain(pdb_id, chain_id)
-        # print(_)
+        
+        # distance matrix computation
         dist_matrix = 0.0
         if self.map_type == "4N4N":
             dist_matrix = self.compute_4n4n_distance_matrix(aa_residues, aa_residues)
@@ -106,6 +111,7 @@ class ContactMap(APDBData):
         else: 
             dist_matrix = self.compute_nn_distance_matrix(aa_residues, aa_residues, self.atom_1, self.atom_2)
         
+        # post-operations: contact-map computation, normalization
         if self.mat_type == "c_map":
             dist_matrix = np.where(dist_matrix < self.th, 1, 0)
         elif self.mat_type == "norm_dist" and self.map_type!="4NN":
@@ -116,17 +122,18 @@ class ContactMap(APDBData):
         else:
             # dist_matrix remains same
             pass
-
+        
+        # post-operations: save contact-map or distance matrix
         if self.save_map:
             DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
         return dist_matrix
 
-c_map = ContactMap(mat_type="norm_dist", map_type='NN', atom_1="CA", atom_2="CA")
+# c_map = ContactMap(mat_type="norm_dist", map_type='NN', atom_1="CA", atom_2="CA")
 # c_map = ContactMap(mat_type="c_map", map_type='4NN')
 # c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
-dist_matrix = c_map.get("5sy8", "O")
-print(dist_matrix.shape)
-if c_map.map_type == "4NN":
-    DataViz.plot_images([dist_matrix[0], dist_matrix[1], dist_matrix[2], dist_matrix[3]], "5sy8"+"O", cols=2)
-else: 
-    DataViz.plot_images([dist_matrix], "5sy8"+"O", cols=1)
+# dist_matrix = c_map.get("5sy8", "O")
+# print(dist_matrix.shape)
+# if c_map.map_type == "4NN":
+#     DataViz.plot_images([dist_matrix[0], dist_matrix[1], dist_matrix[2], dist_matrix[3]], "5sy8"+"O", cols=2)
+# else: 
+#     DataViz.plot_images([dist_matrix], "5sy8"+"O", cols=1)

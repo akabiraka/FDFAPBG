@@ -4,10 +4,13 @@ import numpy as np
 
 import configs.general_config as CONFIGS
 from datasets.a_pdb_data import APDBData
+import utils.data_utils as DataUtils
 
 class MoleculeCoordinates(APDBData):
-    def __init__(self):
+    def __init__(self, normalized=True, save=True):
         super(MoleculeCoordinates, self).__init__()
+        self.normalized = normalized
+        self.save = save
 
     def get_4nn_3d_coords(self, chain):
         """
@@ -38,13 +41,26 @@ class MoleculeCoordinates(APDBData):
         return np.array(d3_coords_matrix)
 
     def get(self, pdb_id, chain_id, atoms=["CB"]):
+        """
+        Returns 3d coordinates extracted from pdb data for given atoms.
+        """
         print("preparing coordinates of molecules for {}:{} ... ...".format(pdb_id, chain_id))
         aa_residues = self.get_a_chain(pdb_id, chain_id)
         d3_coords = self.get_3d_coords(aa_residues, atoms)
+        
+        # post-operations: normalization
+        if self.normalized:
+            d3_coords = DataUtils.scale(d3_coords, 0, 1)
+        
+        # post-operations: saving coordinates
+        if self.save:
+            DataUtils.save_molecule_coordinates(d3_coords, pdb_id+chain_id)
+
         return d3_coords
 
-coords = MoleculeCoordinates()
-d3_coords = coords.get("5sy8", "O", ["CA", "CB"])
-print(d3_coords.shape)
-d3_coords = coords.get("5sy8", "O", CONFIGS.BACKBONE_ATOMS)
-print(d3_coords.shape)
+# coords = MoleculeCoordinates(normalized=True)
+# d3_coords = coords.get("5sy8", "O", ["CA", "CB"])
+# print(d3_coords.shape)
+# # print(d3_coords)
+# d3_coords = coords.get("5sy8", "O", CONFIGS.BACKBONE_ATOMS)
+# print(d3_coords.shape)
