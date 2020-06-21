@@ -6,21 +6,32 @@ from Bio.PDB import *
 
 import configs.general_config as CONFIGS
 import vizualizations.data_viz as DataViz
+import utils.data_utils as DataUtils
 
 class ContactMap(object):
-    def __init__(self, map_type='NN', atom_1="CB", atom_2="CB"):
+    def __init__(self, mat_type="dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8):
         """
+        mat_type: output matrix type
+            values: c_map, dist
+            default: dist 
+            description: c_map (contact map using given threshhold),
+                        dist (distance matrix)
         map_type: NN, 4NN, 4N4N
             NN: CA-CA or CB-CB or N-N or O-O or CA-CB and so on
             4NN: CA-CA, CB-CB, N-N, O-O
             4N4N: CA-CA, CA-CB, CA-N, CA-O and other combinations
+        atom_i: CA, CB, N, O
+        th: threshhold to compute short, medium or long range contact
         """
         super(ContactMap, self).__init__()
         self.parser = MMCIFParser(QUIET=True)
         self.len_bb_atoms = len(CONFIGS.BACKBONE_ATOMS)
+        self.mat_type = mat_type
         self.map_type = map_type
         self.atom_1 = atom_1
         self.atom_2 = atom_2
+        self.save_map = save_map
+        self.th = th
         
     def filter_aa_residues(self, chain):
         """
@@ -130,14 +141,18 @@ class ContactMap(object):
                 # except Exception as e:
                 #     is_defected = True
                 break
-        
-        # print(dist_matrix)
+
+        if self.mat_type == "c_map":
+            dist_matrix = np.where(dist_matrix < self.th, 1, 0)
+
+        if self.save_map:
+            DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
         return is_defected, dist_matrix
 
 
-# c_map = ContactMap("NN", "CA", "CA")
-# c_map = ContactMap("4NN")
-c_map = ContactMap("4N4N")
+# c_map = ContactMap(mat_type="c_map", map_type='NN', atom_1="CA", atom_2="CA")
+# c_map = ContactMap(mat_type="c_map", map_type='4NN')
+c_map = ContactMap(mat_type="dist", map_type='4N4N')
 _, dist_matrix = c_map.get("5sy8", "O")
 print(dist_matrix.shape)
 if c_map.map_type == "4NN":

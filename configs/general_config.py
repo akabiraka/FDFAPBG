@@ -1,6 +1,7 @@
 # data directories
 DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
+CONTACT_MAP_DIR = DATA_DIR + "contact_maps/"
 
 # input files
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
@@ -12,6 +13,7 @@ CIF = 'mmCif'
 
 # file extensions
 DOT_CIF = ".cif"
+DOT_PT = ".pt"
 
 # output directories
 OUTPUT_DIR = "outputs/"
