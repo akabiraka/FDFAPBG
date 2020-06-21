@@ -13,7 +13,6 @@ class DataGenerator(object):
 
         self.pdbl = PDBList()
         
-
     def get_pdb_id(self, line):
         """
         Given a line where first item is a pdb_id with chain_id like '1A62A',
@@ -33,7 +32,7 @@ class DataGenerator(object):
 
 
 generator = DataGenerator()
-c_map = ContactMap()
+c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
 file_content = open(CONFIGS.ALL_PDB_IDS, "r")
 for i, line in enumerate(file_content):
     print("{}th protein:".format(i+1))
@@ -41,5 +40,5 @@ for i, line in enumerate(file_content):
     pdb_with_chain = pdb_id + chain_id
     # print(pdb_id, chain_id)
     generator.download(pdb_id)
-    c_map.get_full(pdb_id, chain_id)
+    c_map.get(pdb_id, chain_id)
     print()

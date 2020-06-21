@@ -9,13 +9,15 @@ import vizualizations.data_viz as DataViz
 import utils.data_utils as DataUtils
 
 class ContactMap(object):
-    def __init__(self, mat_type="dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8):
+    def __init__(self, mat_type="norm_dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8):
         """
         mat_type: output matrix type
-            values: c_map, dist
-            default: dist 
-            description: c_map (contact map using given threshhold),
-                        dist (distance matrix)
+            values: c_map, dist, norm_dist
+            default: norm_dist 
+            description: 
+                c_map (contact map using given threshhold),
+                dist (distance matrix),
+                norm_dist (normalized distance matrix between 0 and 1)
         map_type: NN, 4NN, 4N4N
             NN: CA-CA or CB-CB or N-N or O-O or CA-CB and so on
             4NN: CA-CA, CB-CB, N-N, O-O
@@ -144,6 +146,14 @@ class ContactMap(object):
 
         if self.mat_type == "c_map":
             dist_matrix = np.where(dist_matrix < self.th, 1, 0)
+        elif self.mat_type == "norm_dist" and self.map_type!="4NN":
+            dist_matrix = DataUtils.scale(dist_matrix, 0, 1)
+        elif self.mat_type == "norm_dist" and self.map_type=="4NN":
+            for i in range(0, 4):
+                dist_matrix[i] = DataUtils.scale(dist_matrix[i], 0, 1)
+        else:
+            # dist_matrix remains same
+            pass
 
         if self.save_map:
             DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
@@ -152,7 +162,7 @@ class ContactMap(object):
 
 # c_map = ContactMap(mat_type="c_map", map_type='NN', atom_1="CA", atom_2="CA")
 # c_map = ContactMap(mat_type="c_map", map_type='4NN')
-c_map = ContactMap(mat_type="dist", map_type='4N4N')
+c_map = ContactMap(mat_type="norm_dist", map_type='4N4N')
 _, dist_matrix = c_map.get("5sy8", "O")
 print(dist_matrix.shape)
 if c_map.map_type == "4NN":
