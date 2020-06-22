@@ -7,6 +7,7 @@ DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
 CONTACT_MAP_DIR = DATA_DIR + "contact_maps/"
 MOLECULE_COORDINATES_DIR = DATA_DIR + "molecule_coordinates/"
+CONTACT_MAP_VS_COORDINATES_DIR = DATA_DIR + "c_map_vs_coord_pairs/"
 
 # input files
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
@@ -15,7 +16,7 @@ GOOD_PDB_IDS = DATA_DIR + "good_pdb_ids.txt"
 TRAIN_FILE = DATA_DIR + 'train.txt'
 VAL_FILE = DATA_DIR + 'val.txt'
 TEST_FILE = DATA_DIR + 'test.txt'
-FULL_DATA_FILE = DATA_DIR + 'records.data'
+RECORD_IDS = DATA_DIR + 'record_ids.txt'
 
 # file format
 CIF = 'mmCif'
@@ -23,6 +24,7 @@ CIF = 'mmCif'
 # file extensions
 DOT_CIF = ".cif"
 DOT_PT = ".pt"
+DOT_PKL = ".pkl"
 
 # output directories
 OUTPUT_DIR = "outputs/"

@@ -135,3 +135,6 @@ data/pdbs/*.cif
 data/*.txt
 data/contact_maps/*.pt
 data/molecule_coordinates/*.pt
+data/c_map_vs_coord_pairs/*.pkl
+data/cullpdb_pc20_res1.6_R0.25_d200618_chains3680
+data/records.data
