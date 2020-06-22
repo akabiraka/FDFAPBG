@@ -2,6 +2,7 @@ import sys
 sys.path.append('../FDFAPBG')
 import numpy as np
 import torch
+import pickle
 
 from configs.general_config import *
 
@@ -32,3 +33,16 @@ def scale(X, x_min, x_max):
     denom = X.max(axis=0) - X.min(axis=0)
     denom[denom==0] = 1
     return x_min + nom/denom 
+
+def save_itemlist(itemlist, file):
+    with open(file, 'w') as f:
+        for item in itemlist:
+            f.write("%s\n" % item)
+
+def save_using_pickle(data, filename):
+    with open(filename, 'wb') as filehandle:
+        pickle.dump(data, filehandle)
+
+def load_using_pickle(filename):
+    with open(filename, 'rb') as filehandle:
+        return pickle.load(filehandle)
