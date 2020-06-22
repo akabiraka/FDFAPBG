@@ -3,6 +3,7 @@ sys.path.append('../FDFAPBG')
 import math
 import numpy as np
 import torch
+import traceback
 
 from Bio.PDB import *
 
@@ -99,11 +100,12 @@ for i, line in enumerate(file_content):
     try:
         dist_matrix = c_map.get(pdb_id, chain_id)
         d3_coords = coords.get(pdb_id, chain_id)
-        records.extend(generator.get_1st_frag(pdb_id + chain_id))
-        # records.extend(generator.get_inp_out_sets(pdb_id + chain_id))
+        # records.extend(generator.get_1st_frag(pdb_id + chain_id))
+        records.extend(generator.get_inp_out_sets(pdb_id + chain_id))
         good_proteins.append(pdb_id + chain_id)
         print("Comment: good")
     except Exception as e:
+        traceback.print_exc()
         print("Comment: corrupted\n")
         bad_proteins.append(pdb_id + chain_id)
         continue
