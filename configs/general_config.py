@@ -1,6 +1,6 @@
 # window definations while cropping fixed side data
 WINDOW_SIZE = 256
-WINDOW_STRIDE = 8
+WINDOW_STRIDE = 128
 
 # data directories
 DATA_DIR = "data/"
@@ -15,6 +15,7 @@ GOOD_PDB_IDS = DATA_DIR + "good_pdb_ids.txt"
 TRAIN_FILE = DATA_DIR + 'train.txt'
 VAL_FILE = DATA_DIR + 'val.txt'
 TEST_FILE = DATA_DIR + 'test.txt'
+FULL_DATA_FILE = DATA_DIR + 'records.data'
 
 # file format
 CIF = 'mmCif'

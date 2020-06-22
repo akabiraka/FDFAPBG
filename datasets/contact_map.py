@@ -7,6 +7,8 @@ import vizualizations.data_viz as DataViz
 import utils.data_utils as DataUtils
 from datasets.a_pdb_data import APDBData
 
+import traceback
+
 class ContactMap(APDBData):
     def __init__(self, mat_type="norm_dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8):
         """
@@ -38,14 +40,19 @@ class ContactMap(APDBData):
         An atom could be CA, CB, N, O.
         Default atoms are beta-beta carbon.
         """
-        if atom_1=="CB" and residue_1.get_resname()=='GLY':
-            atom_1 = "CA"
-        
-        if atom_2=="CB" and residue_2.get_resname()=='GLY':
-            atom_2 = "CA"
+        try:
+            if atom_1=="CB" and residue_1.get_resname()=='GLY':
+                atom_1 = "CA"
+            
+            if atom_2=="CB" and residue_2.get_resname()=='GLY':
+                atom_2 = "CA"
 
-        diff_vector = residue_1[atom_1].coord - residue_2[atom_2].coord
-        
+            diff_vector = residue_1[atom_1].coord - residue_2[atom_2].coord
+        except Exception as e:
+            print("Can not resolve distance: ", residue_1.get_resname(), residue_2.get_resname(), atom_1, atom_2)
+            traceback.print_exc()
+            raise
+
         return np.sqrt(np.sum(diff_vector * diff_vector))
 
     def compute_nn_distance_matrix(self, chain_1, chain_2, atom_1="CB", atom_2="CB"):
@@ -102,30 +109,36 @@ class ContactMap(APDBData):
         print("Computing contact-map for {}:{} ... ...".format(pdb_id, chain_id))
         aa_residues = self.get_a_chain(pdb_id, chain_id)
         
-        # distance matrix computation
-        dist_matrix = 0.0
-        if self.map_type == "4N4N":
-            dist_matrix = self.compute_4n4n_distance_matrix(aa_residues, aa_residues)
-        elif self.map_type == "4NN":
-            dist_matrix = self.compute_4nn_distance_matrix(aa_residues, aa_residues)
-        else: 
-            dist_matrix = self.compute_nn_distance_matrix(aa_residues, aa_residues, self.atom_1, self.atom_2)
+        try:
+            # distance matrix computation
+            dist_matrix = 0.0
+            if self.map_type == "4N4N":
+                dist_matrix = self.compute_4n4n_distance_matrix(aa_residues, aa_residues)
+            elif self.map_type == "4NN":
+                dist_matrix = self.compute_4nn_distance_matrix(aa_residues, aa_residues)
+            else: 
+                dist_matrix = self.compute_nn_distance_matrix(aa_residues, aa_residues, self.atom_1, self.atom_2)
+            
+            # post-operations: contact-map computation, normalization
+            if self.mat_type == "c_map":
+                dist_matrix = np.where(dist_matrix < self.th, 1, 0)
+            elif self.mat_type == "norm_dist" and self.map_type!="4NN":
+                dist_matrix = DataUtils.scale(dist_matrix, 0, 1)
+            elif self.mat_type == "norm_dist" and self.map_type=="4NN":
+                for i in range(0, 4):
+                    dist_matrix[i] = DataUtils.scale(dist_matrix[i], 0, 1)
+            else:
+                # dist_matrix remains same
+                pass
+            
+            # post-operations: save contact-map or distance matrix
+            if self.save_map:
+                DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
         
-        # post-operations: contact-map computation, normalization
-        if self.mat_type == "c_map":
-            dist_matrix = np.where(dist_matrix < self.th, 1, 0)
-        elif self.mat_type == "norm_dist" and self.map_type!="4NN":
-            dist_matrix = DataUtils.scale(dist_matrix, 0, 1)
-        elif self.mat_type == "norm_dist" and self.map_type=="4NN":
-            for i in range(0, 4):
-                dist_matrix[i] = DataUtils.scale(dist_matrix[i], 0, 1)
-        else:
-            # dist_matrix remains same
-            pass
-        
-        # post-operations: save contact-map or distance matrix
-        if self.save_map:
-            DataUtils.save_contact_map(dist_matrix, pdb_id+chain_id)
+        except Exception as e:
+            traceback.print_exc()
+            raise
+
         return dist_matrix
 
 # c_map = ContactMap(mat_type="norm_dist", map_type='NN', atom_1="CA", atom_2="CA")
