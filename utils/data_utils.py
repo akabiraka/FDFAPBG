@@ -46,3 +46,11 @@ def save_using_pickle(data, filename):
 def load_using_pickle(filename):
     with open(filename, 'rb') as filehandle:
         return pickle.load(filehandle)
+
+def get_ids(file):
+    """
+    The file should have an id per line.
+    """
+    file_content = open(file).read()
+    # file_content = file_content.lower()
+    return file_content.split()
