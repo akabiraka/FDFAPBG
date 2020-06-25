@@ -9,14 +9,13 @@ from Bio.PDB import *
 
 import configs.general_config as CONFIGS
 import utils.data_utils as DataUtils
+from utils.clean_slate import CleanSlate
 from datasets.contact_map import ContactMap
 from datasets.molecule_coordinates import MoleculeCoordinates
 
 class DataGenerator(object):
     def __init__(self):
         super(DataGenerator, self).__init__()
-        print("alhumdulillah")
-
         self.pdbl = PDBList()
         
     def get_pdb_id(self, line):
@@ -108,6 +107,7 @@ class DataGenerator(object):
 generator = DataGenerator()
 c_map = ContactMap(map_type='4N4N')
 coords = MoleculeCoordinates()
+cln = CleanSlate()
 file_content = open(CONFIGS.ALL_PDB_IDS, "r")
 good_proteins = []
 bad_proteins = []
@@ -122,6 +122,9 @@ for i, line in enumerate(file_content):
         d3_coords = coords.get(pdb_id, chain_id)
         records.extend(generator.get_inp_out_sets(pdb_id + chain_id, save_separately=True))
         good_proteins.append(pdb_id + chain_id)
+        cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_DIR, ext=CONFIGS.DOT_PT)
+        cln.clean_all_files(mydir=CONFIGS.MOLECULE_COORDINATES_DIR, ext=CONFIGS.DOT_PT)
+        cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_CIF)
         print("Comment: good")
     except Exception as e:
         traceback.print_exc()

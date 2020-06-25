@@ -44,6 +44,6 @@ class DataSpliter(object):
         return self.split_from_list(file_content.split())
 
     
-# ds = DataSpliter()
-# ds.split_from_file(CONFIGS.RECORD_IDS)
+ds = DataSpliter()
+ds.split_from_file(CONFIGS.RECORD_IDS)
         
