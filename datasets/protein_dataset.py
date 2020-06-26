@@ -30,8 +30,8 @@ class ProteinDataset(Dataset):
         filename = CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR + self.record_ids[i] + CONFIGS.DOT_PKL
         return DataUtils.load_using_pickle(filename)
 
-# pd = ProteinDataset(file=CONFIGS.VAL_FILE)
-# print(pd.__len__())
-# print(len(pd.__getitem__(0)))
+pd = ProteinDataset(file=CONFIGS.VAL_FILE)
+print(pd.__len__())
+print(len(pd.__getitem__(0)))
 # # accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
-# print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
+print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)

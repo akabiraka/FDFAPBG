@@ -24,8 +24,8 @@ class CleanSlate(object):
                 os.remove(os.path.join(mydir, f))
 
 
-cln = CleanSlate()
-cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, ext=CONFIGS.DOT_PKL)
-cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_DIR, ext=CONFIGS.DOT_PT)
-cln.clean_all_files(mydir=CONFIGS.MOLECULE_COORDINATES_DIR, ext=CONFIGS.DOT_PT)
-cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_CIF)
+# cln = CleanSlate()
+# cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, ext=CONFIGS.DOT_PKL)
+# cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_DIR, ext=CONFIGS.DOT_PT)
+# cln.clean_all_files(mydir=CONFIGS.MOLECULE_COORDINATES_DIR, ext=CONFIGS.DOT_PT)
+# cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_CIF)

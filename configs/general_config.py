@@ -1,5 +1,5 @@
 # window definations while cropping fixed side data
-WINDOW_SIZE = 255 # since 0 to 255 is 256
+WINDOW_SIZE = 256 # since 0 to 255 is 256
 WINDOW_STRIDE = 64
 
 # data directories
