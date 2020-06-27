@@ -8,6 +8,7 @@ from TorchProteinLibrary import RMSD
 class RMSDLoss(nn.Module):
     """
     Rigid body alignment loss using RMSD (root mean squared deviation) loss.
+    This use TorchProteinLibrary's RMSD implementation.
     """
 
     def __init__(self, device):

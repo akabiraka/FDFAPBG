@@ -3,6 +3,9 @@ import torch.nn as nn
 
 class RMSD_loss(nn.Module):
     """
+    RMSD loss is computed using quaternion instead of computing
+    rotation matrix through SVD. 
+    
     Code idea is taken from:
     [1] https://towardsdatascience.com/tensorflow-rmsd-using-tensorflow-for-things-it-was-not-designed-to-do-ada4c9aa0ea2
     [2] https://github.com/mdtraj/tftraj/blob/master/tftraj/rmsd.py
