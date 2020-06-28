@@ -63,10 +63,16 @@ class ProteinDataset(Dataset):
         var: the var value defines the amount of noise to be added. 
             Higher value means noisier data.
             variences = [1, .1, .01, .001, .0001]
-            example: 
+            example: https://github.com/akabiraka/FDFAPBG/blob/master/outputs/images/noise_distance_matrix_using_speckle.png
         """
         noisy_dist_mat = torch.tensor(random_noise(dist_mat, mode='speckle', mean=mean, var=var, clip=True), dtype=torch.float32)
         return noisy_dist_mat
+
+    def add_poisson_noise(self, dist_mat):
+        """
+        dist_mat: n-d distance-matrix
+        """
+        return torch.tensor(random_noise(dist_mat, mode="poisson"))
 
 
 pd = ProteinDataset(file=CONFIGS.VAL_FILE)
@@ -101,3 +107,9 @@ pd = ProteinDataset(file=CONFIGS.VAL_FILE)
 # noisy_dist_matrices = [pd.add_speckle_noise(dist_mat, var=var) for var in variences]
 # noisy_dist_matrices.insert(0, dist_mat) # adding lground-truth contact-map at the end
 # DataViz.plot_images(noisy_dist_matrices, img_name="matrix", titles=titles, cols=3) 
+
+# adding poisson noise with distance matrix
+# dist_mat = pd.__getitem__(0)[0]
+# titles = ["ground truth", "poisson"]
+# noisy_dist_matrices = [dist_mat, pd.add_poisson_noise(dist_mat)]
+# DataViz.plot_images(noisy_dist_matrices, img_name="matrix", titles=titles, cols=2) 
