@@ -34,14 +34,18 @@ class ProteinDataset(Dataset):
         filename = CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR + self.record_ids[i] + CONFIGS.DOT_PKL
         return DataUtils.load_using_pickle(filename)
 
-    def add_gaussian_noise(self, dist_mat, mean=0, var=0.05):
+    def add_gaussian_noise(self, dist_mat, mean=0, var=0.01):
         """
         dist_mat: 2d distance-matrix
         var: defines the amount of noise to be added. Higher value means noisier data.
             variences = [1, .1, .01, .001, .0001]
             .1 for much noisier than .0001
         """
-        noisy_dist_mat = torch.tensor(random_noise(dist_mat, mode='gaussian', mean=mean, var=var, clip=True))
+        noisy_dist_mat = torch.tensor(random_noise(dist_mat, mode='gaussian', mean=mean, var=var, clip=True), dtype=torch.float32)
+        return noisy_dist_mat
+
+    def add_saltpepper_noise(self, dist_mat, amount=.001):
+        noisy_dist_mat = torch.tensor(random_noise(dist_mat, mode='s&p', salt_vs_pepper=0.5, amount=amount, clip=True))
         return noisy_dist_mat
 
 
@@ -52,7 +56,7 @@ pd = ProteinDataset(file=CONFIGS.VAL_FILE)
 # print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
 
 # adding gaussian noise with distance matrix
-dist_mat = pd.__getitem__(0)[0]
+# dist_mat = pd.__getitem__(0)[0]
 # variences = [1, .1, .01, .001, .0001]
 # titles = ["var:"+str(var) for var in variences]
 # titles.insert(0, "ground truth")
@@ -61,5 +65,10 @@ dist_mat = pd.__getitem__(0)[0]
 # DataViz.plot_images(noisy_dist_matrices, img_name="matrix", titles=titles, cols=3) 
 
 # adding salt&pepper noise with distance matrix
-
-# s_and_p = torch.tensor(random_noise(dist_mat, mode='s&p', salt_vs_pepper=0.5, clip=True))
+# dist_mat = pd.__getitem__(0)[0]
+# n_amount = [.5, .3, .1, .05, .005]
+# titles = ["amount:"+str(amount) for amount in n_amount]
+# titles.insert(0, "ground truth")
+# noisy_dist_matrices = [pd.add_saltpepper_noise(dist_mat, amount=amount) for amount in n_amount]
+# noisy_dist_matrices.insert(0, dist_mat) # adding lground-truth contact-map at the end
+# DataViz.plot_images(noisy_dist_matrices, img_name="matrix", titles=titles, cols=3) 
