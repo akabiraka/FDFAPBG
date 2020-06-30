@@ -138,3 +138,5 @@ data/molecule_coordinates/*.pt
 data/c_map_vs_coord_pairs/*.pkl
 data/cullpdb_pc20_res1.6_R0.25_d200618_chains3680
 data/records.data
+data/c_map_vs_coord_pairs.zip
+datasets/protein_dataset_x.py

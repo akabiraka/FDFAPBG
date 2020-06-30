@@ -67,8 +67,9 @@ class Autoencoder(nn.Module):
 
     def encode(self, x):
         x = self.encoder(x)
+        # print("encoded shape:", x.shape, x.view(x.shape[0], -1).shape)
+        x = self.fc1(x.view(x.shape[0], -1))
         # print("encoded shape:", x.shape)
-        x = self.fc1(x.view(-1))
         z = self.fc2(x)
         # print("latent space:", z.shape)
         return z
@@ -86,10 +87,10 @@ class Autoencoder(nn.Module):
         o = self.decode(z)
         return o, z
 
-# AE = Autoencoder()
+AE = Autoencoder()
 # # print(AE)
-# x = torch.randn((1, 1, 256, 256), dtype=torch.float32, requires_grad=True)
-# x_prime, z = AE(x)
+x = torch.randn((20, 1, 256, 256), dtype=torch.float32, requires_grad=True)
+x_prime, z = AE(x)
 # criterion = nn.MSELoss(reduction='mean')
 # loss = criterion(x_prime, x)
 # print(loss)
