@@ -91,4 +91,8 @@ ds.split_from_file(CONFIGS.RECORD_IDS)
 pd = ProteinDataset(file=CONFIGS.TRAIN_FILE)
 pd.__getitem__(0)
 ```
-    
+
+**To clean some directories before/after data generation, run following command after commenting out or adding some lines at the bottom of the ```utils\clean_slate.py``` file.**
+```
+python utils\clean_slate.py
+```
