@@ -132,6 +132,7 @@ dmypy.json
 .vscode/
 
 data/pdbs/*.cif
+data/pdbs/*.pdb
 data/*.txt
 data/contact_maps/*.pt
 data/molecule_coordinates/*.pt
@@ -140,3 +141,5 @@ data/cullpdb_pc20_res1.6_R0.25_d200618_chains3680
 data/records.data
 data/c_map_vs_coord_pairs.zip
 datasets/protein_dataset_x.py
+data/model_ids_container/*.txt
+data/1AIL_Output_RosettaDecoys_SubDirs0-509999-002.pdb
