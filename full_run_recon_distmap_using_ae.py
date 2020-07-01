@@ -16,7 +16,8 @@ from datasets.protein_dataset import ProteinDataset
 import configs.general_config as CONFIGS
 
 lrs = [1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7]
-for lr in lrs:
+for ith_start, lr in enumerate(lrs):
+    print("ith_start=", ith_start)
     print("declaring variables and hyperparameters... ... ")
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = Autoencoder()
@@ -117,7 +118,7 @@ for lr in lrs:
             if val_loss < best_test_loss:
                 best_test_loss = val_loss
                 print('Updating best val loss: {:.7f}'.format(best_test_loss))
-                torch.save(model.state_dict(), 'outputs/models/ae_cmap_recon.pth')
+                torch.save(model.state_dict(), 'outputs/models/ae_cmap_recon_{}.pth'.format(ith_start))
 
         if epoch % plot_every == 0:
             pass
