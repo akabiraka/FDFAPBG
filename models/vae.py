@@ -103,7 +103,7 @@ class VAE(nn.Module):
         # print("z shape:", z.size())
         decoded = self.decode(z)
         # print("decoded:", decoded.size())
-        return decoded, mu, logvar
+        return decoded, z, mu, logvar
 
 class VAELoss(nn.Module):
     def __init__(self, reduction='mean'):
@@ -137,7 +137,7 @@ class VAELoss(nn.Module):
 # model = VAE()
 # model.to(device='cuda')
 # x = torch.randn((5, 1, 256, 256), dtype=torch.float32, requires_grad=True, device='cuda')
-# x_prime, mu, logvar = model(x)
+# x_prime, z, mu, logvar = model(x)
 # criterion = VAELoss(reduction='mean')
 # # loss = criterion(x_prime, x)
 # loss = criterion(x_prime, x, mu, logvar)
