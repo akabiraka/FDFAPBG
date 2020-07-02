@@ -10,9 +10,9 @@ class APDBData(object):
     Abstract parent class. When new datatype needs to be extracted from PDB data,
     implement this class. Example subclasses are: ContactMap, MoleculeCoordinates.
     """
-    def __init__(self):
+    def __init__(self, parser=MMCIFParser(QUIET=True)):
         super(APDBData, self).__init__()
-        self.parser = MMCIFParser(QUIET=True)
+        self.parser = parser
 
     def filter_aa_residues(self, chain):
         """

@@ -1,14 +1,14 @@
 import sys
 sys.path.append("../FDFAPBG")
 import numpy as np
-
+from Bio.PDB import *
 import configs.general_config as CONFIGS
 from datasets.a_pdb_data import APDBData
 import utils.data_utils as DataUtils
 
 class MoleculeCoordinates(APDBData):
-    def __init__(self, normalized=True, save=True):
-        super(MoleculeCoordinates, self).__init__()
+    def __init__(self, normalized=True, save=True, parser=MMCIFParser(QUIET=True)):
+        super(MoleculeCoordinates, self).__init__(parser=parser)
         self.normalized = normalized
         self.save = save
 

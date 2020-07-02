@@ -8,9 +8,10 @@ import utils.data_utils as DataUtils
 from datasets.a_pdb_data import APDBData
 
 import traceback
+from Bio.PDB import *
 
 class ContactMap(APDBData):
-    def __init__(self, mat_type="norm_dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8):
+    def __init__(self, mat_type="norm_dist", map_type='NN', atom_1="CB", atom_2="CB", save_map=True, th=8, parser=MMCIFParser(QUIET=True)):
         """
         mat_type: output matrix type
             values: c_map, dist, norm_dist
@@ -26,7 +27,7 @@ class ContactMap(APDBData):
         atom_i: CA, CB, N, O
         th: threshhold to compute short, medium or long range contact
         """
-        super(ContactMap, self).__init__()
+        super(ContactMap, self).__init__(parser=parser)
         self.mat_type = mat_type
         self.map_type = map_type
         self.atom_1 = atom_1
