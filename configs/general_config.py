@@ -23,8 +23,10 @@ CIF = 'mmCif'
 
 # file extensions
 DOT_CIF = ".cif"
+DOT_PDB = ".pdb"
 DOT_PT = ".pt"
 DOT_PKL = ".pkl"
+DOT_TXT = ".txt"
 
 # output directories
 OUTPUT_DIR = "outputs/"
