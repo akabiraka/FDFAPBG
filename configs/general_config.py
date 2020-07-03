@@ -1,13 +1,13 @@
 # window definations while cropping fixed side data
 WINDOW_SIZE = 256 # since 0 to 255 is 256
-WINDOW_STRIDE = 64
+WINDOW_STRIDE = 192
 
 # data directories
 DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
 CONTACT_MAP_DIR = DATA_DIR + "contact_maps/"
 MOLECULE_COORDINATES_DIR = DATA_DIR + "molecule_coordinates/"
-CONTACT_MAP_VS_COORDINATES_DIR = DATA_DIR + "c_map_vs_coord_pairs/"
+CONTACT_MAP_VS_COORDINATES_DIR = DATA_DIR + "c_map_vs_coord_pairs_1/"
 
 # input files
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
