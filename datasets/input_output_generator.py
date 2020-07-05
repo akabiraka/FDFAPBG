@@ -21,18 +21,18 @@ class InputOutputGenerator(object):
         print("Generating input-output sets for {} ... ...".format(pdb_code))
         full_c_map = DataUtils.read_contact_map_tensor(pdb_code)
         full_d3_coords = DataUtils.read_3d_coords_tensor(pdb_code)
-        # print(full_c_map.shape, d3_coords.shape)
+        # print(full_c_map.shape, full_d3_coords.shape)
         rows, cols = full_c_map.shape
         half_width = math.floor(CONFIGS.WINDOW_SIZE / 2)
         a_input_output_set = []
         all_input_output_set = []
         all_record_ids = []
         k = 0
-        for i in range(half_width, rows - half_width, CONFIGS.WINDOW_STRIDE):
+        for i in range(half_width, rows-half_width+1, CONFIGS.WINDOW_STRIDE):
             s1_from_idx = i - half_width
             s1_to_idx = i + half_width
             d3_coords_out = full_d3_coords[s1_from_idx:s1_to_idx]
-            for j in range(half_width, rows - half_width, CONFIGS.WINDOW_STRIDE):
+            for j in range(half_width, rows-half_width+1, CONFIGS.WINDOW_STRIDE):
                 s2_from_idx = j - half_width
                 s2_to_idx = j + half_width
                 
