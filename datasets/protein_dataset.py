@@ -119,17 +119,17 @@ class ProteinDataset(Dataset):
         return torch.tensor(random_noise(dist_mat, mode="poisson"))
 
 
-pd = ProteinDataset("data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
-print(pd.__len__())
-print(len(pd.__getitem__(0)))
-# accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
-print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
+# pd = ProteinDataset("data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
+# print(pd.__len__())
+# print(len(pd.__getitem__(0)))
+# # accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
+# print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
 
-# adding little salt_pepper noise
-# pd = ProteinDataset(file=CONFIGS.VAL_FILE, noise_type="salt_pepper", noise_mode='little')
-ground_truth = pd.get_ground_truth(0)[0]
-noisy_dist_mat = pd.__getitem__(0)[0]
-DataViz.plot_images([ground_truth, noisy_dist_mat], img_name="matrix", cols=2) 
+# # adding little salt_pepper noise
+# # pd = ProteinDataset(file=CONFIGS.VAL_FILE, noise_type="salt_pepper", noise_mode='little')
+# ground_truth = pd.get_ground_truth(0)[0]
+# noisy_dist_mat = pd.__getitem__(0)[0]
+# DataViz.plot_images([ground_truth, noisy_dist_mat], img_name="matrix", cols=2) 
 
 # adding gaussian noise with distance matrix
 # pd = ProteinDataset(file=CONFIGS.VAL_FILE)
