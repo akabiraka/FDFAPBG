@@ -61,9 +61,7 @@ class RosettaPDBParser(object):
                 try:
                     dist_matrix = self.c_map.get(pdb_id, chain_id)
                     d3_coords = self.coords.get(pdb_id, chain_id, CONFIGS.BACKBONE_ATOMS)
-                    # records.extend(self.inp_out_gen.get_inp_out_sets(pdb_id+chain_id, save_separately=True))
                     record_ids = self.inp_out_gen.get_inp_out_sets(pdb_id+chain_id, save_separately=True)
-                    # records_ids_filehandle.write(record_ids)
                     for record_id in record_ids:
                         records_ids_filehandle.write("%s\n" % record_id)
                 except Exception as e:
@@ -91,4 +89,4 @@ class RosettaPDBParser(object):
         return file_handle, pdb_id
 
 rosetta_pdb_parser = RosettaPDBParser()
-rosetta_pdb_parser.parse(filename="data/1FWP_Output_RosettaDecoys_SubDirs0-99999-002.pdb", out_file_prefix="1fwp", chain_id="A", n_models=5000)
+rosetta_pdb_parser.parse(filename="data/1HZ6A_Output_RosettaDecoys_SubDirs0-99999-002.pdb", out_file_prefix="1hz6", chain_id="A", n_models=5000)
