@@ -142,4 +142,6 @@ data/records.data
 data/c_map_vs_coord_pairs.zip
 datasets/protein_dataset_x.py
 data/model_ids_container/*.txt
-data/1AIL_Output_RosettaDecoys_SubDirs0-509999-002.pdb
+data/*.pdb
+outputs/logs/*
+outputs/models/*
