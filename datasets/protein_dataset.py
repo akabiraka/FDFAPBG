@@ -18,7 +18,7 @@ class ProteinDataset(Dataset):
         noise_type: optional. Available options are:
             salt_pepper, speckle, gaussian
         noise_mode: optional. Available options are:
-            little, medium, much
+            little, medium, large
         """
         super(ProteinDataset, self).__init__()
         self.data_dir = data_dir
@@ -55,25 +55,25 @@ class ProteinDataset(Dataset):
     def add_noise(self, dist_mat, noise_type, mode):
         """
         noise_type: salt_pepper, speckle, gaussian
-        noise_mode: little, medium, much
+        noise_mode: little, medium, large
         """
         if noise_type=="salt_pepper" and mode=="little":
             return self.add_saltpepper_noise(dist_mat, amount=0.05)
         elif noise_type=="salt_pepper" and mode=="medium":
             return self.add_saltpepper_noise(dist_mat, amount=0.1)
-        elif noise_type=="salt_pepper" and mode=="much":
+        elif noise_type=="salt_pepper" and mode=="large":
             return self.add_saltpepper_noise(dist_mat, amount=0.3)
         elif noise_type=="speckle" and mode=="little":
             return self.add_speckle_noise(dist_mat, var=0.01)
         elif noise_type=="speckle" and mode=="medium":
             return self.add_speckle_noise(dist_mat, var=0.1)
-        elif noise_type=="speckle" and mode=="much":
+        elif noise_type=="speckle" and mode=="large":
             return self.add_speckle_noise(dist_mat, var=1)
         elif noise_type=="gaussian" and mode=="little":
             return self.add_gaussian_noise(dist_mat, var=0.001)
         elif noise_type=="gaussian" and mode=="medium":
             return self.add_gaussian_noise(dist_mat, var=0.01)
-        elif noise_type=="gaussian" and mode=="much":
+        elif noise_type=="gaussian" and mode=="large":
             return self.add_gaussian_noise(dist_mat, var=0.1)
         else:
             return dist_mat
@@ -93,7 +93,7 @@ class ProteinDataset(Dataset):
     def add_saltpepper_noise(self, dist_mat, amount=0.3):
         """
         dist_mat: n dimensional matrix
-        amount: the amount value defines how much salt&pepper noise will be added.
+        amount: the amount value defines how large salt&pepper noise will be added.
             Greater amount value means noisier data.
             n_amount = [.5, .3, .1, .05, .005]
             example: https://github.com/akabiraka/FDFAPBG/blob/master/outputs/images/noise_distance_matrix_using_saltpepper.png
@@ -127,10 +127,11 @@ class ProteinDataset(Dataset):
 # print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
 
 # adding little salt_pepper noise
-pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="salt_pepper", noise_mode='much')
-ground_truth = pd.get_ground_truth(0)[0]
-noisy_dist_mat = pd.__getitem__(0)[0]
-DataViz.plot_images([ground_truth], img_name="matrix", cols=2) 
+# pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="gaussian", noise_mode='large')
+# ground_truth = pd.get_ground_truth(0)[0]
+# noisy_dist_mat = pd.__getitem__(0)[0]
+# # DataViz.plot_images([ground_truth], img_name="distance_matrix_ground_truth.pdf", cols=1, save_plt=True, file_format="pdf", dpi=300) 
+# DataViz.plot_image(noisy_dist_mat, img_name="Distance_Matrix_Gaussian_Large.pdf", figsize=(5,5), save_plt=True, file_format="pdf", dpi=300) 
 
 # adding gaussian noise with distance matrix
 # pd = ProteinDataset(file=CONFIGS.VAL_FILE)

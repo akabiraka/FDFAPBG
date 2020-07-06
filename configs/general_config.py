@@ -1,13 +1,13 @@
 # window definations while cropping fixed side data
 WINDOW_SIZE = 256 # since 0 to 255 is 256
-WINDOW_STRIDE = 32
+WINDOW_STRIDE = 64
 
 # data directories
 DATA_DIR = "data/"
 PDB_DIR = DATA_DIR + "pdbs/"
 CONTACT_MAP_DIR = DATA_DIR + "contact_maps/"
 MOLECULE_COORDINATES_DIR = DATA_DIR + "molecule_coordinates/"
-CONTACT_MAP_VS_COORDINATES_DIR = DATA_DIR + "1hz6A_c_map_vs_coord_pairs/"
+CONTACT_MAP_VS_COORDINATES_DIR = DATA_DIR + "c_map_vs_coord_pairs/"
 
 # input files
 ALL_PDB_IDS = DATA_DIR + "all_pdb_ids_tiny.txt"
@@ -16,7 +16,7 @@ GOOD_PDB_IDS = DATA_DIR + "good_pdb_ids.txt"
 TRAIN_FILE = DATA_DIR + 'train.txt'
 VAL_FILE = DATA_DIR + 'val.txt'
 TEST_FILE = DATA_DIR + 'test.txt'
-RECORD_IDS = DATA_DIR + '1hz6A_record_ids.txt'
+RECORD_IDS = DATA_DIR + 'record_ids.txt'
 
 # file format
 CIF = 'mmCif'
