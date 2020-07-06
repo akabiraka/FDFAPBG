@@ -2,6 +2,7 @@ import sys
 sys.path.append('../FDFAPBG')
 import math
 import matplotlib.pyplot as plt
+from numpy import random
 
 def plot_images(images, img_name, titles=None, cols=3, save_plt=False, file_format="png", dpi=None):
     rows = math.ceil(len(images) / cols)
@@ -25,8 +26,10 @@ def plot_image(image, img_name, figsize=(5,5), save_plt=False, file_format="png"
         dpi: i.e 300 
     """
     plt.figure(figsize=figsize)
-    plt.imshow(image)
+    img = plt.imshow(image)
+    # img.set_cmap('hot')
+    plt.axis('off')
     if save_plt:
-        plt.savefig("outputs/images/{}".format(img_name), dpi=dpi, format=file_format)
+        plt.savefig("outputs/images/{}".format(img_name), bbox_inches='tight', pad_inches=0)
     else:
         plt.show()
