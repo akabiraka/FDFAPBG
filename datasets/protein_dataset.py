@@ -127,10 +127,10 @@ class ProteinDataset(Dataset):
 # print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
 
 # adding little salt_pepper noise
-# pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="salt_pepper", noise_mode='much')
-# ground_truth = pd.get_ground_truth(0)[0]
-# noisy_dist_mat = pd.__getitem__(0)[0]
-# DataViz.plot_images([ground_truth, noisy_dist_mat], img_name="matrix", cols=2) 
+pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="salt_pepper", noise_mode='much')
+ground_truth = pd.get_ground_truth(0)[0]
+noisy_dist_mat = pd.__getitem__(0)[0]
+DataViz.plot_images([ground_truth], img_name="matrix", cols=2) 
 
 # adding gaussian noise with distance matrix
 # pd = ProteinDataset(file=CONFIGS.VAL_FILE)
