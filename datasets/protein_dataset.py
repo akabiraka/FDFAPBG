@@ -12,7 +12,7 @@ import utils.data_utils as DataUtils
 import vizualizations.data_viz as DataViz
 
 class ProteinDataset(Dataset):
-    def __init__(self, file=CONFIGS.TRAIN_FILE, noise_type=None, noise_mode=None):
+    def __init__(self, data_dir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, file=CONFIGS.TRAIN_FILE, noise_type=None, noise_mode=None):
         """
         file: a file path that have an id per line, this id will used to access the data.
         noise_type: optional. Available options are:
@@ -21,6 +21,7 @@ class ProteinDataset(Dataset):
             little, medium, much
         """
         super(ProteinDataset, self).__init__()
+        self.data_dir = data_dir
         self.record_ids = DataUtils.get_ids(file)
         self.noise_type = noise_type
         self.noise_mode = noise_mode
@@ -37,7 +38,7 @@ class ProteinDataset(Dataset):
         inp: contact-map/distance-map matrix
         out: 3d coordinate matrix.
         """
-        filename = CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR + self.record_ids[i] + CONFIGS.DOT_PKL
+        filename = self.data_dir + self.record_ids[i] + CONFIGS.DOT_PKL
         dist_mat, d3_coords = DataUtils.load_using_pickle(filename)
         noisey_dist_mat = self.add_noise(dist_mat=dist_mat, noise_type=self.noise_type, mode=self.noise_mode)
         return noisey_dist_mat, d3_coords
@@ -48,7 +49,7 @@ class ProteinDataset(Dataset):
         inp: contact-map/distance-map matrix
         out: 3d coordinate matrix.
         """
-        filename = CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR + self.record_ids[i] + CONFIGS.DOT_PKL
+        filename = self.data_dir + self.record_ids[i] + CONFIGS.DOT_PKL
         return DataUtils.load_using_pickle(filename)
 
     def add_noise(self, dist_mat, noise_type, mode):
@@ -119,14 +120,14 @@ class ProteinDataset(Dataset):
         return torch.tensor(random_noise(dist_mat, mode="poisson"))
 
 
-# pd = ProteinDataset("data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
+# pd = ProteinDataset(file="data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
 # print(pd.__len__())
 # print(len(pd.__getitem__(0)))
 # # accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
 # print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
 
-# # adding little salt_pepper noise
-# # pd = ProteinDataset(file=CONFIGS.VAL_FILE, noise_type="salt_pepper", noise_mode='little')
+# adding little salt_pepper noise
+# pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="salt_pepper", noise_mode='much')
 # ground_truth = pd.get_ground_truth(0)[0]
 # noisy_dist_mat = pd.__getitem__(0)[0]
 # DataViz.plot_images([ground_truth, noisy_dist_mat], img_name="matrix", cols=2) 
