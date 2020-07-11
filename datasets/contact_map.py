@@ -53,6 +53,8 @@ class ContactMap(APDBData):
             print("Can not resolve distance: ", residue_1.get_resname(), residue_2.get_resname(), atom_1, atom_2)
             traceback.print_exc()
             raise
+            # in case, there is an error but I want the distance matrix, comment out above lines and comment in next line
+            # return 0.0 
 
         return np.sqrt(np.sum(diff_vector * diff_vector))
 
