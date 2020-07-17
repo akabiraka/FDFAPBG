@@ -12,7 +12,7 @@ import utils.data_utils as DataUtils
 import vizualizations.data_viz as DataViz
 
 class ProteinDataset(Dataset):
-    def __init__(self, data_dir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, file=CONFIGS.TRAIN_FILE, noise_type=None, noise_mode=None):
+    def __init__(self, data_dir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, file=CONFIGS.TRAIN_FILE, noise_type=None, noise_mode=None, record_ids=None):
         """
         file: a file path that have an id per line, this id will used to access the data.
         noise_type: optional. Available options are:
@@ -22,7 +22,7 @@ class ProteinDataset(Dataset):
         """
         super(ProteinDataset, self).__init__()
         self.data_dir = data_dir
-        self.record_ids = DataUtils.get_ids(file)
+        self.record_ids = record_ids if record_ids is not None else DataUtils.get_ids(file)
         self.noise_type = noise_type
         self.noise_mode = noise_mode
 

@@ -125,7 +125,7 @@ class ContactMap(APDBData):
             # post-operations: contact-map computation, normalization
             if self.mat_type == "c_map":
                 dist_matrix = np.where(dist_matrix < self.th, 1, 0)
-            elif self.mat_type == "norm_dist" and self.map_type!="4NN":
+            elif self.mat_type == "norm_dist" and self.map_type!="4N4N":  # error: was 4nn
                 dist_matrix = DataUtils.scale(dist_matrix, 0, 1)
             elif self.mat_type == "norm_dist" and self.map_type=="4NN":
                 for i in range(0, 4):
