@@ -42,8 +42,29 @@ class DataSpliter(object):
         """
         file_content = open(file).read()
         return self.split_from_list(file_content.split())
+    
+    def split_from_cullpdb_file(self, file, train_size=.60, val_size=.20, save=True):
+        """cullpdb file as 6 columns. Only extract the pdb_code from 1st column.
+
+        Args:
+            file (string): file path
+            train_size (float, optional): [description]. Defaults to .60.
+            val_size (float, optional): [description]. Defaults to .20.
+            save (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            3 lists: train_set, val_set, test_set
+        """
+        file_handle = open(file, "r")
+        pdb_codes = []
+        for i, line in enumerate(file_handle):
+            pdb_codes.append(line.split()[0])
+        
+        # random.shuffle(pdb_codes)
+        return self.split_from_list(pdb_codes)
 
     
 ds = DataSpliter()
-ds.split_from_file(CONFIGS.RECORD_IDS)
+# ds.split_from_file(CONFIGS.RECORD_IDS)
+ds.split_from_cullpdb_file("data/cullpdb_pc20_res1.6_R0.25_d200618_chains3680")
         
