@@ -120,11 +120,12 @@ class ProteinDataset(Dataset):
         return torch.tensor(random_noise(dist_mat, mode="poisson"))
 
 
-# pd = ProteinDataset(file="data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
-# print(pd.__len__())
-# print(len(pd.__getitem__(0)))
+pd = ProteinDataset(file="data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
+print(pd.__len__())
+print(len(pd.__getitem__(0)))
 # # accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
-# print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
+print(pd.__getitem__(100)[0].shape, pd.__getitem__(100)[1].shape)
+print(pd.__getitem__(100)[1])
 
 # adding little salt_pepper noise
 # pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="speckle", noise_mode='little')

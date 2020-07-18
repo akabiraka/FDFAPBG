@@ -3,6 +3,7 @@ sys.path.append('../FDFAPBG')
 import math
 import numpy as np
 import torch
+import time
 import traceback
 
 from Bio.PDB import *
@@ -55,16 +56,24 @@ class DataGenerator(object):
         return all_input_output_set
         
 generator = DataGenerator()
-c_map = ContactMap(map_type='4N4N')
-coords = MoleculeCoordinates()
+c_map = ContactMap(mat_type="dist", map_type='4N4N')
+coords = MoleculeCoordinates(normalized=False)
 inp_out_gen = InputOutputGenerator()
 cln = CleanSlate()
-file_content = open(CONFIGS.ALL_PDB_IDS, "r")
+# file_content = open(CONFIGS.ALL_PDB_IDS, "r")
+file_content = open(CONFIGS.TRAIN_FILE, "r")
 good_proteins = []
 bad_proteins = []
 records = []
+n_proteins_to_skip = 0
+total_proteins_to_evaluate = 500
+ith_protein_evaluating = 0
+start_time = time.time()
 for i, line in enumerate(file_content):
-    print("{}th protein:".format(i+1))
+    # skipping 1st n_proteins_to_skip proteins
+    if i < n_proteins_to_skip: continue
+    
+    print("Processing {}th protein out of {} proteins ... ...:".format(ith_protein_evaluating+1, i+1))
     pdb_id, chain_id = generator.get_pdb_id(line)
     # print(pdb_id, chain_id)
     generator.download(pdb_id)
@@ -76,6 +85,10 @@ for i, line in enumerate(file_content):
         cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_DIR, ext=CONFIGS.DOT_PT)
         cln.clean_all_files(mydir=CONFIGS.MOLECULE_COORDINATES_DIR, ext=CONFIGS.DOT_PT)
         cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_CIF)
+        
+        if dist_matrix.shape[0] > CONFIGS.WINDOW_SIZE:
+            ith_protein_evaluating += 1
+        
         print("Comment: good")
     except Exception as e:
         traceback.print_exc()
@@ -84,9 +97,14 @@ for i, line in enumerate(file_content):
         continue
     print(dist_matrix.shape, d3_coords.shape)
     print()
+    
+    if ith_protein_evaluating == total_proteins_to_evaluate:
+        break
 
 DataUtils.save_itemlist(bad_proteins, CONFIGS.BAD_PDB_IDS)
 DataUtils.save_itemlist(good_proteins, CONFIGS.GOOD_PDB_IDS)
 DataUtils.save_itemlist(records, CONFIGS.RECORD_IDS)
 # print(good_proteins)
 # print(bad_proteins)
+run_time = (time.time()-start_time)/60
+print("run_time: {} minutes".format(run_time))
