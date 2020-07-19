@@ -145,3 +145,4 @@ data/model_ids_container/*.txt
 data/*.pdb
 outputs/logs/*
 outputs/models/*
+data/fragments/*
