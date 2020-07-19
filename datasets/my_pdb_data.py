@@ -11,6 +11,7 @@ class ChainAndAminoAcidSelect(Select):
         self.chain_id = chain_id
         
     def  accept_chain(self, chain):
+        # print(chain.id)
         if chain.id == self.chain_id:
             return 1
         else:

@@ -41,7 +41,7 @@ class ProteinDataset(Dataset):
         filename = self.data_dir + self.record_ids[i] + CONFIGS.DOT_PKL
         dist_mat, d3_coords = DataUtils.load_using_pickle(filename)
         noisey_dist_mat = self.add_noise(dist_mat=dist_mat, noise_type=self.noise_type, mode=self.noise_mode)
-        return noisey_dist_mat/100.0, d3_coords/100.0
+        return torch.tensor(noisey_dist_mat, dtype=torch.float32), torch.tensor(d3_coords, dtype=torch.float32)
 
     def get_ground_truth(self, i):
         """
@@ -120,13 +120,13 @@ class ProteinDataset(Dataset):
         return torch.tensor(random_noise(dist_mat, mode="poisson"))
 
 
-pd = ProteinDataset(file="data/record_ids.txt")#(file=CONFIGS.VAL_FILE)
-# pd = ProteinDataset(data_dir="data/val_set/c_map_vs_coord_pairs/", file="data/val_record_ids.txt")
+# pd = ProteinDataset(file="data/train_good_fragment_ids.txt")#(file=CONFIGS.VAL_FILE)
+pd = ProteinDataset(data_dir="data/train_set_cmap_coord_pairs/", file="data/train_set_good_fragment_ids.txt")
 print(pd.__len__())
 print(len(pd.__getitem__(0)))
 # # accessing a fixed size contact-map/distance-matrix and 3d-coordinate matrix
 print(pd.__getitem__(0)[0].shape, pd.__getitem__(0)[1].shape)
-print(pd.__getitem__(0)[1])
+# print(pd.__getitem__(0)[1])
 
 # adding little salt_pepper noise
 # pd = ProteinDataset(file=CONFIGS.RECORD_IDS, noise_type="speckle", noise_mode='little')
