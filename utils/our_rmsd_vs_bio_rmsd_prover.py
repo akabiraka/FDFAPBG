@@ -5,6 +5,7 @@ import numpy as np
 import torch
 from models.rmsd_loss import RMSD_loss
 from Bio.SVDSuperimposer import SVDSuperimposer
+from Bio.PDB.Superimposer import Superimposer
 
 for row in [16, 32, 64, 128, 256]:
     size = (row, 3)
@@ -17,6 +18,11 @@ for row in [16, 32, 64, 128, 256]:
         sup.set(x/100, x)
         sup.run()
         bio_rmsd = sup.get_rms()
+        
+        # Superimposer uses SVDSuperimposer
+        # sup = Superimposer() 
+        # sup.set_atoms(x , x)
+        # bio_rmsd = sup.rms 
 
         rmsdLoss = RMSD_loss()
         my_rmsd = rmsdLoss.rmsd(torch.tensor(x).unsqueeze(dim=0), torch.tensor(y).unsqueeze(dim=0))
