@@ -69,8 +69,9 @@ def test(test_set, log_file=None, n_models=None):
         run_time = (time.time() - start_time)/60
         
         print(CA_rmsd_loss, CB_rmsd_loss, N_rmsd_loss, O_rmsd_loss, total_loss, run_time)
-        log_file_handle.write(str(CA_rmsd_loss)+", "+str(CB_rmsd_loss)+", "+\
-            str(N_rmsd_loss)+", "+str(O_rmsd_loss)+", "+str(total_loss)+", "+str(run_time) + "\n")
+        log_file_handle.write("{} {} {} {} {} {}\n".format(str(CA_rmsd_loss), str(CB_rmsd_loss), str(N_rmsd_loss), str(O_rmsd_loss), str(total_loss), str(run_time)))
+        # log_file_handle.write(str(CA_rmsd_loss)+", "+str(CB_rmsd_loss)+", "+\
+        #     str(N_rmsd_loss)+", "+str(O_rmsd_loss)+", "+str(total_loss)+", "+str(run_time) + "\n")
         
         if n_models is not None and (i+1)==n_models: break
 
