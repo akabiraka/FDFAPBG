@@ -10,7 +10,9 @@ class CleanSlate(object):
 
     def clean_all(self):
         cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_VS_COORDINATES_DIR, ext=CONFIGS.DOT_PKL)
+        cln.clean_all_files(mydir=CONFIGS.CLEAN_PDB_DIR, ext=CONFIGS.DOT_PDB)
         cln.clean_all_files(mydir=CONFIGS.CONTACT_MAP_DIR, ext=CONFIGS.DOT_PT)
+        cln.clean_all_files(mydir=CONFIGS.FRAGMENTS_DIR, ext=CONFIGS.DOT_PDB)
         cln.clean_all_files(mydir=CONFIGS.MOLECULE_COORDINATES_DIR, ext=CONFIGS.DOT_PT)
         cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_CIF)
         cln.clean_all_files(mydir=CONFIGS.PDB_DIR, ext=CONFIGS.DOT_PDB)
