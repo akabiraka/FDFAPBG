@@ -9,12 +9,12 @@ from Bio.SVDSuperimposer import SVDSuperimposer
 for row in [16, 32, 64, 128, 256]:
     size = (row, 3)
     print(size)
-    for i in range(100):
+    for i in range(10):
         x = np.random.uniform(low=-30.0, high=30.0, size=size)
         y = np.random.uniform(low=-30.0, high=30.0, size=size)
 
         sup = SVDSuperimposer()
-        sup.set(x, y)
+        sup.set(x/100, x)
         sup.run()
         bio_rmsd = sup.get_rms()
 
