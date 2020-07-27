@@ -145,5 +145,5 @@ data/model_ids_container/*.txt
 data/*.pdb
 outputs/logs/*
 outputs/models/*
-data/fragments/*
-data/clean_pdbs/*
+data/fragments/*.pdb
+data/clean_pdbs/*.pdb

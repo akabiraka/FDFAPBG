@@ -37,7 +37,7 @@ good_fragment_id_handle = open("data/val_batch_good_fragment_ids.txt", "a")
 file_content = open(CONFIGS.VAL_FILE, "r")
 
 n_proteins_to_skip = 0
-total_proteins_to_evaluate = n_proteins_to_skip + 5000
+total_proteins_to_evaluate = n_proteins_to_skip + 5
 
 for i, line in enumerate(file_content):
     if i < n_proteins_to_skip: continue
