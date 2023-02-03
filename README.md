@@ -1,5 +1,5 @@
 # Project Title
-This project is started from the paper titled "FULLY DIFFERENTIABLE FULL-ATOM PROTEIN BACKBONE GENERATION"
+This project is part of the paper titled "From Interatomic Distances to Protein Tertiary Structures with a Deep Convolutional Neural Network". [Link](https://dl.acm.org/doi/10.1145/3388440.3414699)
 
 ## What it does?
 1. Generates [distance-matrix, 3d-coordinates] pair of some fixed window-size and stride. 
@@ -95,4 +95,19 @@ pd.__getitem__(0)
 **To clean some directories before/after data generation, run following command after commenting out or adding some lines at the bottom of the ```utils\clean_slate.py``` file.**
 ```
 python utils\clean_slate.py
+```
+
+## Citation
+If the model is found useful, we request to cite the relevant paper:
+```bibtex
+@inproceedings{Du2020,
+  doi = {10.1145/3388440.3414699},
+  url = {https://doi.org/10.1145/3388440.3414699},
+  year = {2020},
+  month = sep,
+  publisher = {{ACM}},
+  author = {Yuanqi Du and Anowarul Kabir and Liang Zhao and Amarda Shehu},
+  title = {From Interatomic Distances to Protein Tertiary Structures with a Deep Convolutional Neural Network},
+  booktitle = {Proceedings of the 11th {ACM} International Conference on Bioinformatics,  Computational Biology and Health Informatics}
+}
 ```
